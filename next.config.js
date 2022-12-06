@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    mongoDBuser: 'nextWolf',
-    mongoDBpassword: 'KWXww0RYXFY06sQT'
+    mongoDBuser: '',
+    mongoDBpassword: ''
   }
 };
 
