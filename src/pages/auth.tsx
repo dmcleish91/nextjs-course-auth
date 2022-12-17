@@ -3,26 +3,26 @@ import { GetServerSideProps } from 'next/types';
 import AuthForm from '../components/auth/auth-form';
 
 function AuthPage() {
-	return <AuthForm />;
+  return <AuthForm />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession({ req: context.req });
+  const session = await getSession({ req: context.req });
 
-	if (session) {
-		return {
-			redirect: {
-				destination: '/profile',
-				permanent: false,
-			},
-		};
-	}
+  if (session) {
+    return {
+      redirect: {
+        destination: '/profile',
+        permanent: false,
+      },
+    };
+  }
 
-	return {
-		props: {
-			session,
-		},
-	};
+  return {
+    props: {
+      session,
+    },
+  };
 };
 
 export default AuthPage;

@@ -6,40 +6,40 @@ import { verifyPassword } from '../../../libs/authenticationutils';
 import { connectToClient, userExists } from '../../../libs/dbconnectionutils';
 
 const authOptions: NextAuthOptions = {
-	session: {
-		strategy: 'jwt',
-	},
-	providers: [
-		CredentialProvider({
-			type: 'credentials',
-			credentials: {},
-			authorize: async (credentials) => {
-				const { email, password } = credentials as { email: string; password: string };
-				console.log('credentials =', credentials);
+  session: {
+    strategy: 'jwt',
+  },
+  providers: [
+    CredentialProvider({
+      type: 'credentials',
+      credentials: {},
+      authorize: async (credentials) => {
+        const { email, password } = credentials as { email: string; password: string };
+        console.log('credentials =', credentials);
 
-				const client = await connectToClient();
-				const db = client.db();
-				const user = await userExists(db, 'users', { email: email });
+        const client = await connectToClient();
+        const db = client.db();
+        const user = await userExists(db, 'users', { email: email });
 
-				if (!user) {
-					client.close();
-					throw new Error('No user found!');
-				}
+        if (!user) {
+          client.close();
+          throw new Error('No user found!');
+        }
 
-				console.log('user = ', user);
+        console.log('user = ', user);
 
-				const isValid = verifyPassword(password, user.password);
+        const isValid = verifyPassword(password, user.password);
 
-				if (!isValid) {
-					client.close();
-					throw new Error('invalid password! Try again!');
-				}
+        if (!isValid) {
+          client.close();
+          throw new Error('invalid password! Try again!');
+        }
 
-				client.close();
-				return { id: user._id.toString(), email: email };
-			},
-		}),
-	],
+        client.close();
+        return { id: user._id.toString(), email: email };
+      },
+    }),
+  ],
 };
 
 export default NextAuth(authOptions);
